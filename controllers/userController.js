@@ -19,6 +19,11 @@ const registerUser = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error("Name, Email and password are mandatory")
     };
+    const userEmail = await User.findOne({ email: email });
+    if (userEmail) {
+        res.status(409);
+        throw new Error("Email already registered")
+    }
 
     const user = await User.create({
         name,
